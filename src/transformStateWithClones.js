@@ -35,7 +35,7 @@ function clearState(state) {
 }
 
 function addProperties(state, extraData) {
-  const clone = { ...state };
+  let clone = { ...state };
 
   clone = { ...clone, extraData };
 
