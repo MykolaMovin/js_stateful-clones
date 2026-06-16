@@ -27,6 +27,7 @@ function transformStateWithClones(state, actions) {
 
 function clearState(state) {
   const clone = { ...state };
+
   for (const key in clone) {
     delete clone[key];
   }
@@ -35,9 +36,7 @@ function clearState(state) {
 }
 
 function addProperties(state, extraData) {
-  let clone = { ...state };
-
-  clone = { ...clone, extraData };
+  const clone = { ...state, ...extraData };
 
   return clone;
 }
