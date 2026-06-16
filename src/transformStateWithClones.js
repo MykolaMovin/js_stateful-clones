@@ -8,17 +8,24 @@
  */
 function transformStateWithClones(state, actions) {
   const clones = [];
+  const currentState = { ...state };
 
   actions.forEach((action) => {
     switch (action.type) {
       case 'clear':
-        clones.push(clearState(state));
+        clearState(currentState);
+        clones.push({ ...currentState });
         break;
       case 'addProperties':
-        clones.push(addProperties(state, action.extraData));
+        addProperties(currentState, action.extraData);
+        clones.push({ ...currentState });
         break;
       case 'removeProperties':
-        clones.push(removeProperties(state, action.keysToRemove));
+        removeProperties(currentState, action.keysToRemove);
+        clones.push({ ...currentState });
+        break;
+      default:
+        return 'Invalid data';
     }
   });
 
@@ -26,29 +33,19 @@ function transformStateWithClones(state, actions) {
 }
 
 function clearState(state) {
-  const clone = { ...state };
-
-  for (const key in clone) {
-    delete clone[key];
+  for (const key in state) {
+    delete state[key];
   }
-
-  return clone;
 }
 
 function addProperties(state, extraData) {
-  const clone = { ...state, ...extraData };
-
-  return clone;
+  Object.assign(state, extraData);
 }
 
 function removeProperties(state, properties) {
-  const clone = { ...state };
-
   for (const property of properties) {
-    delete clone[property];
+    delete state[property];
   }
-
-  return clone;
 }
 
 module.exports = transformStateWithClones;
